@@ -29,12 +29,31 @@ The backend follows a modular **Model-View-Controller (MVC) / Router-Service pat
 
 ```
 server/
- ┣ middleware/       # Security & Authorization Middlewares (JWT Bearer Verification, Role Checks)
- ┣ models/           # Mongoose Database Schemas (User, Project, Inventory, Labor, Invitation)
- ┣ routes/           # RESTful API Endpoints (/auth, /projects, /inventory, /labor, /users, /invitations)
- ┣ utils/            # Helper Functions & Error Handlers
- ┣ index.js          # Express Server Setup, CORS Configuration & Database Connection
- ┗ package.json      # Dependencies & Script Definitions
+ ┣ middleware/                     # Security & Authorization Middlewares
+ ┃ ┣ auth.js                       # JWT Bearer Token verification & user attachment
+ ┃ ┣ requireBillingEngineer.js     # Billing Engineer operational boundary check
+ ┃ ┣ requireRole.js                # Granular Role-Based Access Control (RBAC) evaluator
+ ┃ ┗ requireSiteEngineer.js        # Site Engineer operational boundary check
+ ┣ models/                         # Mongoose NoSQL Database Schemas
+ ┃ ┣ InventoryItem.js              # Inventory catalog & quantity schema
+ ┃ ┣ Labor.js                      # Construction workforce attendance & cost log schema
+ ┃ ┣ Project.js                    # Construction project metadata & assigned team schema
+ ┃ ┣ ProjectInvite.js              # Project invitation & token expiration schema
+ ┃ ┣ Team.js                       # Engineer directory & enterprise team schema
+ ┃ ┣ TeamInvite.js                 # Enterprise team invitation schema
+ ┃ ┗ User.js                       # User credentials, roles & bcrypt hash schema
+ ┣ routes/                         # RESTful API Endpoints & Business Logic
+ ┃ ┣ auth.js                       # /api/auth (Login, signup, session verification)
+ ┃ ┣ inventory.js                  # /api/inventory (CRUD, quantity tracking, filtering)
+ ┃ ┣ labor.js                      # /api/labor (Attendance logging, site auditing)
+ ┃ ┣ projects.js                   # /api/projects (Project creation, engineer assignment)
+ ┃ ┣ teams.js                      # /api/teams (Directory management, invitation dispatch)
+ ┃ ┗ users.js                      # /api/users (User profiles, engineer directory lookup)
+ ┣ utils/                          # Helper Functions & Error Handlers
+ ┃ ┗ roles.js                      # Role definitions & hierarchy utilities
+ ┣ .env.example                    # Environment variable configuration template
+ ┣ index.js                        # Express Server Setup, CORS & MongoDB Connection
+ ┗ package.json                    # NPM Dependencies & Script Definitions
 ```
 
 ### Key Architectural Highlights:
